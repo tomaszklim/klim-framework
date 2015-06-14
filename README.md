@@ -11,7 +11,6 @@ This code is used by several commercial products, that either are or will be off
 ## What's interesting inside
 
 1. Database client infrastructure. Written with philosophy "write and test all functional code once, then only change application configuration when moving to bigger database engine" in mind. Supported databases:
-
 - Oracle (tested on 10g2 and 11g)
 - MySQL
 - Microsoft SQL Server
@@ -25,10 +24,7 @@ This code is used by several commercial products, that either are or will be off
 - NNTP servers (select only)
 - CSV files (select only)
 - Excel 2007+ spreadsheets (select only, using external PHPExcel library)
-
-
 2. Cache infrastructure. Written with the same philosophy in mind. Supported cache stores:
-
 - Memcached (using 2 separate drivers: faster from PECL, or slower internal)
 - Redis
 - Tokyo Tyrant
@@ -41,10 +37,7 @@ This code is used by several commercial products, that either are or will be off
 - Zend Server Disk Cache
 - file store as cache (slow but cheap, terabyte-size cache on local filesystem)
 - database as cache (all r/w databases supported by database driver)
-
-
 3. HTTP client with very strong emphasis on various response caching aspects, and on session handling.
-
 4. API client (including API generator) - infrastructure to treat forms on websites as API endpoints and build/use API methods around them. Useful for dealing with websites that don't have an API, or where site owner (eg. bank) don't want to give API access to some users.
 
 
