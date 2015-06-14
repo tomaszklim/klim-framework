@@ -8,7 +8,45 @@ It was first written and tested on Debian Etch, then respectively on Lenny, Sque
 This code is used by several commercial products, that either are or will be offered by Fajne.IT.
 
 
-## Application structure:
+## What's interesting inside
+
+1. Database client infrastructure. Written with philosophy "write and test all functional code once, then only change application configuration when moving to bigger database engine" in mind. Supported databases:
+
+- Oracle (tested on 10g2 and 11g)
+- MySQL
+- Microsoft SQL Server
+- Microsoft Access (read only on Linux, read/write on Windows)
+- InterBase / FireBird
+- Pervasive.SQL
+- PostgreSQL
+- SQLite
+- ODBC for everything else supporting ODBC
+- IMAP servers (read/write)
+- NNTP servers (select only)
+- CSV files (select only)
+- Excel 2007+ spreadsheets (select only, using external PHPExcel library)
+
+2. Cache infrastructure. Written with the same philosophy in mind. Supported cache stores:
+
+- Memcached (using 2 separate drivers: faster from PECL, or slower internal)
+- Redis
+- Tokyo Tyrant
+- eAccelerator
+- APC
+- Turck MM Cache
+- XCache
+- WinCache
+- Zend Server SHM Cache
+- Zend Server Disk Cache
+- file store as cache (slow but cheap, terabyte-size cache on local filesystem)
+- database as cache (all r/w databases supported by database driver)
+
+3. HTTP client with very strong emphasis on various response caching aspects, and on session handling.
+
+4. API client (including API generator) - infrastructure to treat forms on websites as API endpoints and build/use API methods around them. Useful for dealing with websites that don't have an API, or where site owner (eg. bank) don't want to give API access to some users.
+
+
+## Application structure
 
 ```
 /app - root directory (can be changed)
@@ -34,6 +72,29 @@ Code in bootstrap.php file has been designed to allow setting up multiple applic
 Message logging is done to `/var/log/php/*.log` multiple log files, one file per logging facility, eg. `core.log`, `db.log` (`/var/log/php` directory must be writable for developers).
 
 
+## Example code
+
+```
+$db = new KlimDatabase();
+
+$db->select( "users", "login, password, country_id", array (
+    "country_id" => array( 1, 56 ),
+    "login" => array( "like", "t%" ),
+    "registered" => array( ">", "2009-01-01" )
+), array (
+    "order by" => "login",
+    "limit" => 100,
+    "offset" => 1200,
+) );
+
+$db->update( "users", array (
+    "password" => "1234"
+), array (
+    "login" => "tomek"
+) );
+```
+
+
 ## Authors
 
 Some of this code has been originally taken at least from:
@@ -52,7 +113,7 @@ Code outside klim-* directories and bootstrap.php file was written by several ot
 
 Many technical concepts used in this code were consciously or unconsciously inspired by knowledge of "Qeppo" platform used at Allegro Group, for which I worked almost 7 years.
 
-ALL SUCH CODE HAS BEEN WRITTEN FROM SCRATCH, WITHOUT USING "Qeppo" CODE.
+ALL THIS CODE (excluding code in "Authors" section above) HAS BEEN WRITTEN FROM SCRATCH, WITHOUT USING "Qeppo" CODE.
 
 However, some of my code for Allegro Group were intentionally written to test some of my ideas in huge-traffic application on huge audience (over 20 millions of users, multiple Gbps traffic) and then reimplement them as open source in my spare time, avoiding problems spotted in the tests of first version. Still, all such code has been written again from scratch, without using "Qeppo" code.
 
