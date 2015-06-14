@@ -26,6 +26,7 @@ This code is used by several commercial products, that either are or will be off
 - CSV files (select only)
 - Excel 2007+ spreadsheets (select only, using external PHPExcel library)
 
+
 2. Cache infrastructure. Written with the same philosophy in mind. Supported cache stores:
 
 - Memcached (using 2 separate drivers: faster from PECL, or slower internal)
@@ -40,6 +41,7 @@ This code is used by several commercial products, that either are or will be off
 - Zend Server Disk Cache
 - file store as cache (slow but cheap, terabyte-size cache on local filesystem)
 - database as cache (all r/w databases supported by database driver)
+
 
 3. HTTP client with very strong emphasis on various response caching aspects, and on session handling.
 
