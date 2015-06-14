@@ -23,14 +23,15 @@ This code is used by several commercial products, that either are or will be off
 /app/klimbs/branch1/java - local Java root directory
 /app/klimbs/branch1/java/lib - JAR files
 /app/klimbs/branch1/java/src - Java source code and compiled classes
-
-/etc/environment-type - file containing "dev", "test" or "prod" (server type), meant to be read-only for developers
-/var/log/php/*.log - multiple log files, for each facility, eg. core.log, db.log (/var/log/php directory must be writable for developers)
 ```
 
-Allowed application root directories are included in Bootstrap::$paths static array, in bootstrap.php file. This should be the only thing to change, if you want to fork this repository and use it for your purposes.
+Allowed application root directories are included in `Bootstrap::$paths` static array, in bootstrap.php file. This should be the only thing to change, if you want to fork this repository and use it for your purposes.
 
 Code in bootstrap.php file has been designed to allow setting up multiple applications on single server. All of these applications share `/app/cache` and `/app/libs` directories, but have independent `include` and `java` subdirectories, depending on application root paths recognized by bootstrap.php.
+
+`/etc/environment-type` file is required to be present on all servers using this code, and to be read-only for developers. Acceptable values as either "dev", "test" or "prod", meaning the server type.
+
+Message logging is done to `/var/log/php/*.log` multiple log files, one file per logging facility, eg. `core.log`, `db.log` (`/var/log/php` directory must be writable for developers).
 
 
 ## Authors
@@ -51,7 +52,7 @@ Code outside klim-* directories and bootstrap.php file was written by several ot
 
 Many technical concepts used in this code were consciously or unconsciously inspired by knowledge of "Qeppo" platform used at Allegro Group, for which I worked almost 7 years.
 
-ALL OF THIS CODE HAS BEEN REWRITTER FROM SCRATCH, WITHOUT USING "Qeppo" CODE.
+ALL SUCH CODE HAS BEEN WRITTEN FROM SCRATCH, WITHOUT USING "Qeppo" CODE.
 
 However, some of my code for Allegro Group were intentionally written to test some of my ideas in huge-traffic application on huge audience (over 20 millions of users, multiple Gbps traffic) and then reimplement them as open source in my spare time, avoiding problems spotted in the tests of first version. Still, all such code has been written again from scratch, without using "Qeppo" code.
 
