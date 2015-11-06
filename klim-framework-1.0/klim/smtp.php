@@ -29,17 +29,18 @@ class KlimSmtp
 
 	public function __construct( $credentials = false )
 	{
-		Bootstrap::addLibrary("phpmailer-2.3-patched");
+		Bootstrap::addLibrary("phpmailer-5.2.14-patched");
 		require_once "class.phpmailer.php";
+		require_once "class.smtp.php";
 
 		$this->mailer = new PHPMailer();
-		$this->mailer->SetLanguage( "en" );
+		$this->mailer->setLanguage( "en" );
 		$this->mailer->CharSet = "UTF-8";
 
 		if ( !is_array($credentials) || empty($credentials) ) {
-			$this->mailer->IsSendmail();
+			$this->mailer->isSendmail();
 		} else {
-			$this->mailer->IsSMTP();
+			$this->mailer->isSMTP();
 			$this->mailer->Host = $credentials["host"];
 			$this->mailer->Port = $credentials["port"];
 
@@ -78,7 +79,7 @@ class KlimSmtp
 
 	public function setClientIp( $ip )
 	{
-		$this->mailer->AddCustomHeader( "X-IP: $ip" );
+		$this->mailer->addCustomHeader( "X-IP: $ip" );
 	}
 
 	public function setConfirmReadingTo( $addr )
@@ -100,28 +101,28 @@ class KlimSmtp
 	{
 		$addr = preg_replace( "/\s+/", "", $addr );
 		$name = $name ? preg_replace("/\s+/", " ", $name) : $addr;
-		$this->mailer->AddReplyTo( $addr, $name );
+		$this->mailer->addReplyTo( $addr, $name );
 	}
 
 	public function addCC( $addr, $name = false )
 	{
 		$addr = preg_replace( "/\s+/", "", $addr );
 		$name = $name ? preg_replace("/\s+/", " ", $name) : $addr;
-		$this->mailer->AddCC( $addr, $name );
+		$this->mailer->addCC( $addr, $name );
 	}
 
 	public function addBCC( $addr, $name = false )
 	{
 		$addr = preg_replace( "/\s+/", "", $addr );
 		$name = $name ? preg_replace("/\s+/", " ", $name) : $addr;
-		$this->mailer->AddBCC( $addr, $name );
+		$this->mailer->addBCC( $addr, $name );
 	}
 
 	public function addRecipient( $addr, $name = false )
 	{
 		$addr = preg_replace( "/\s+/", "", $addr );
 		$name = $name ? preg_replace("/\s+/", " ", $name) : $addr;
-		$this->mailer->AddAddress( $addr, $name );
+		$this->mailer->addAddress( $addr, $name );
 	}
 
 	public function addHeader( $header, $value = false )
@@ -130,7 +131,7 @@ class KlimSmtp
 		if ( $value ) {
 			$header .= ":" . preg_replace( "/\s+/", " ", $value );
 		}
-		$this->mailer->AddCustomHeader( $header );
+		$this->mailer->addCustomHeader( $header );
 	}
 
 	public function addAttachment( $file, $name = false )
@@ -138,7 +139,7 @@ class KlimSmtp
 		if ( $name ) {
 			$name = preg_replace( "/\s+/", " ", $name );
 		}
-		$this->mailer->AddAttachment( $file, $name );
+		$this->mailer->addAttachment( $file, $name );
 	}
 
 	public function addEmbeddedImage( $file, $cid, $name = false )
@@ -146,7 +147,7 @@ class KlimSmtp
 		if ( $name ) {
 			$name = preg_replace( "/\s+/", " ", $name );
 		}
-		$this->mailer->AddEmbeddedImage( $file, $cid, $name );
+		$this->mailer->addEmbeddedImage( $file, $cid, $name );
 	}
 
 	public function setPriority( $priority )
@@ -186,7 +187,7 @@ class KlimSmtp
 		}
 
 		$this->sent = true;
-		if ( $this->mailer->Send() ) {
+		if ( $this->mailer->send() ) {
 			return true;
 		}
 
