@@ -45,7 +45,12 @@ class KlimMime
 		}
 
 		while ( preg_match("/=\?.*\?b\?.*\?=/i", $str, $matches) && strpos($str, "'") === false ) {
-			$str = preg_replace( "/(.*)=\?.*\?b\?(.*)\?=(.*)/ie", "'$1'.base64_decode('$2').'$3'", $str );
+			$before = $str;
+			$str = preg_replace_callback("/(.*)=\?.*\?b\?(.*)\?=(.*)/i",
+				function ($matches) {
+					return $matches[1] . base64_decode($matches[2]) . $matches[3];
+				},
+				$before );
 		}
 
 		if ( empty($encoding) || !strcasecmp($encoding, "iso-8859-1") ) {
